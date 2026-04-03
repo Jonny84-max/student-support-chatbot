@@ -47,9 +47,9 @@ if days_to_start > 0:
     show_days = days_to_start <= 7    # Show full exam days only if less than 7 days to start
 else:
     countdown = ""   # Neutral if exam has started or passed
+    
+return first_exam_day, last_exam_day, countdown, show_days 
     show_days = False
-# resturn everything
-return first_exam_day, last_exam_day, countdown, show_days   
 
 # Generate schedules
 f_start, f_end, f_count, f_days = get_exam_details(3, 1)   # 1st sem: March, 1st week

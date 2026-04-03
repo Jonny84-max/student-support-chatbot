@@ -14,7 +14,9 @@ model = joblib.load("chatbot_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
 # Generate Exam Schedule
-def get_exam_details(month, start_week):  # Generates weekday-only exam schedule (Mon–Fri only) and countdown.  # Get current year
+def get_exam_details(month, start_week):  
+    """ Generates weekday-only exam schedule (Mon–Fri only) and countdown """.  
+    # Get current year
     year = datetime.datetime.now().year
     first_day = datetime.date(year, month, 1)   # First day of the month
     first_monday = first_day + datetime.timedelta(days=(7 - first_day.weekday()) % 7)  # Find first Monday
@@ -94,11 +96,23 @@ Daily start time: 9:00 AM""",
 - Office hours: 8:00 AM – 4:00 PM"""
 }
 # STREAMLIT UI
-st.title("📚 Nigerian Navy Institute of Technology: Student Support Chatbot")
+st.title("📚 Nigerian Navy Institute of Technology: Student Support System")
 st.write("Ask about exams, assignments, library, registration, etc.")
 user_input = st.text_input("Type your question here:")
+
 if user_input:
-    input_vec = vectorizer.transform([user_input])
-    intent = model.predict(input_vec)[0]
+    text = user_input.lower()
+    if "exam" in text:
+        if any(word in text for word in ["2nd", "second", "sem 2", "semester 2"]):
+            intent = "2nd Semester exam"
+        elif any(word in text for word in ["1st", "first", "sem 1", "semester 1"]):
+            intent = "1st Semester exam"
+        else:
+            # If user just says "exam", default to upcoming one
+            intent = "1st Semester exam"
+    else:
+        # fallback to ML model
+        input_vec = vectorizer.transform([text])
+        intent = model.predict(input_vec)[0]
     answer = responses.get(intent, "Sorry, I don't have an answer for that yet.")
     st.write(f"**Bot:** {answer}")

@@ -14,8 +14,7 @@ model = joblib.load("chatbot_model.pkl")
 vectorizer = joblib.load("vectorizer.pkl")
 
 # Generate Exam Schedule
-def get_exam_details(month, start_week):  
-    """ Generates weekday-only exam schedule (Mon–Fri only) and countdown """.  
+def get_exam_details(month, start_week):  # Generates weekday-only exam schedule (Mon–Fri only) and countdown.  
     # Get current year
     year = datetime.datetime.now().year
     first_day = datetime.date(year, month, 1)   # First day of the month

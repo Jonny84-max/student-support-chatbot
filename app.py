@@ -49,7 +49,7 @@ else:
     countdown = ""   # Neutral if exam has started or passed
     show_days = False
 
-return first_exam_day, last_exam_day, countdown, show_days
+return first_exam_day, last_exam_day, countdown, show_days   # resturn everything
 
 # Generate schedules
 f_start, f_end, f_count, f_days = get_exam_details(3, 1)   # 1st sem: March, 1st week

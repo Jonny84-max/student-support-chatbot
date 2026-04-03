@@ -70,8 +70,15 @@ responses = {
 }
 
 def format_exam_response(start, end, countdown, show_days, days):
-    response = f"Exam Schedule:\n🗓 {start.strftime('%d %B %Y')} – {end.strftime('%d %B %Y')}\n{countdown}\nDaily start time: 9:00 AM"
-    if show_days:
+    """
+    Formats the exam response nicely with full stops after the year and countdown.
+    """
+    response = f"Exam Schedule:\n {start.strftime('%d %B %Y')} – {end.strftime('%d %B %Y')}."    # Add full stop after date range
+    if countdown:           # Add countdown with full stop if it exists
+        response += f" {countdown}."   
+        response += " Daily start time: 9:00 AM"     # Daily start time
+    
+    if show_days:     # Include exam days only if within 7 days
         day_list = "\n".join([day.strftime("%A, %d %B %Y") for day in days])
         response += f"\n\nExam Days (Weekdays only):\n{day_list}"
     return response

@@ -39,20 +39,15 @@ def get_exam_details(month, start_week):
     first_exam_day = exam_days[0]
     last_exam_day = exam_days[-1]
 
-    # Countdown
-    today = datetime.date.today()
-    days_to_start = (first_exam_day - today).days
-
-    if days_to_start > 0:
-        countdown = f"Exam starts in {days_to_start} days"
-    elif days_to_start == 0:
-        countdown = "Exam starts today!"
-    else:
-        countdown = "Exam already started or completed"
-
-    # Show weekdays only if exam starts within 7 days
-    show_days = exam_days if 0 <= days_to_start <= 7 else None
-
+# Countdown
+today = datetime.date.today()
+days_to_start = (first_exam_day - today).days
+if days_to_start > 0:
+    countdown = f"Exam starts in {days_to_start} days"
+    show_days = days_to_start <= 7    # Show full exam days only if less than 7 days to start
+else:
+    countdown = ""   # Neutral if exam has started or passed
+    show_days = False
     return first_exam_day, last_exam_day, countdown, show_days
 
 # Generate schedules
@@ -61,8 +56,8 @@ s_start, s_end, s_count, s_days = get_exam_details(8, 3)   # 2nd sem: August, 3r
 
 # Build responses
 responses = {
-    "1st Semester exam": "",
-    "2nd Semester exam": "",
+    "1st Semester exam": f" First Semester Exam Schedule:\n🗓 {f_start.strftime('%d %B %Y')} – {f_end.strftime('%d %B %Y')}\n{f_count}\n{first_sched}\n Daily start time: 9:00 AM",
+    "2nd Semester exam": f" Second Semester Exam Schedule:\n🗓 {s_start.strftime('%d %B %Y')} – {s_end.strftime('%d %B %Y')}\n{s_count}\n{second_sched}\n Daily start time: 9:00 AM",
     "assignment and project deadlines": " Assignment and Project Deadlines:\n- Assignment due: May 25, 2026\n- Project due: June 12, 2026",
     "library": " Library Hours:\n- Weekdays: 8:00 AM – 6:00 PM\n- Weekends: 10:00 AM – 4:00 PM",
     "tutoring": " Tutoring:\n- Tutoring is free.\n- Available subjects: Math, Physics, CS.\n- Next session: May 20, 2026",

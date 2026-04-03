@@ -56,8 +56,8 @@ s_start, s_end, s_count, s_show_days, s_days = get_exam_details(8, 3)   # 2nd se
 
 # Build responses
 responses = {
-    "1st Semester exam": f" First Semester Exam Schedule:\n🗓 {f_start.strftime('%d %B %Y')} – {f_end.strftime('%d %B %Y')}\n{f_count}\n{first_sched}\n Daily start time: 9:00 AM",
-    "2nd Semester exam": f" Second Semester Exam Schedule:\n🗓 {s_start.strftime('%d %B %Y')} – {s_end.strftime('%d %B %Y')}\n{s_count}\n{second_sched}\n Daily start time: 9:00 AM",
+    "1st Semester exam": f" First Semester Exam Schedule:\n {f_start.strftime('%d %B %Y')} – {f_end.strftime('%d %B %Y')}\n{f_count}\n{f_days}\n Daily start time: 9:00 AM",
+    "2nd Semester exam": f" Second Semester Exam Schedule:\n {s_start.strftime('%d %B %Y')} – {s_end.strftime('%d %B %Y')}\n{s_count}\n{s_days}\n Daily start time: 9:00 AM",
     "assignment and project deadlines": " Assignment and Project Deadlines:\n- Assignment due: May 25, 2026\n- Project due: June 12, 2026",
     "library": " Library Hours:\n- Weekdays: 8:00 AM – 6:00 PM\n- Weekends: 10:00 AM – 4:00 PM",
     "tutoring": " Tutoring:\n- Tutoring is free.\n- Available subjects: Math, Physics, CS.\n- Next session: May 20, 2026",

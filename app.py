@@ -34,7 +34,7 @@ def get_exam_details(month, start_week):
     while len(exam_days) < 10:
         if current_day.weekday() < 5:  # Mon-Fri only
             exam_days.append(current_day)
-        current_day += datetime.timedelta(days=1)
+            current_day += datetime.timedelta(days=1)
 
     first_exam_day = exam_days[0]
     last_exam_day = exam_days[-1]
@@ -47,10 +47,8 @@ if days_to_start > 0:
     show_days = days_to_start <= 7    # Show full exam days only if less than 7 days to start
 else:
     countdown = ""   # Neutral if exam has started or passed
-    
 return first_exam_day, last_exam_day, countdown, show_days 
-    show_days = False
-
+    
 # Generate schedules
 f_start, f_end, f_count, f_days = get_exam_details(3, 1)   # 1st sem: March, 1st week
 s_start, s_end, s_count, s_days = get_exam_details(8, 3)   # 2nd sem: August, 3rd week

@@ -21,37 +21,38 @@ def get_exam_details(month, start_week):
         first_exam_day
         last_exam_day
         countdown string
-        optional exam_days (list of weekdays) if exam is within 7 days
+        show_days (boolean)
+        exam_days (list of weekdays)
     """
     year = datetime.datetime.now().year
     first_day = datetime.date(year, month, 1)
-    first_monday = first_day + datetime.timedelta(days=(7 - first_day.weekday()) % 7)
-    start_date = first_monday + datetime.timedelta(weeks=start_week - 1)
-
-    # Generate only weekdays for 2 weeks (10 days)
-    exam_days = []
+    first_monday = first_day + datetime.timedelta(days=(7 - first_day.weekday()) % 7)  # Find first Monday
+    start_date = first_monday + datetime.timedelta(weeks=start_week - 1)       # Start date for requested week
+    exam_days = []   # Generate only weekdays for 2 weeks (10 weekdays)
     current_day = start_date
     while len(exam_days) < 10:
         if current_day.weekday() < 5:  # Mon-Fri only
             exam_days.append(current_day)
-            current_day += datetime.timedelta(days=1)
-
+        current_day += datetime.timedelta(days=1)
     first_exam_day = exam_days[0]
     last_exam_day = exam_days[-1]
 
-# Countdown
-today = datetime.date.today()
-days_to_start = (first_exam_day - today).days
-if days_to_start > 0:
-    countdown = f"Exam starts in {days_to_start} days"
-    show_days = days_to_start <= 7    # Show full exam days only if less than 7 days to start
-else:
-    countdown = ""   # Neutral if exam has started or passed
-return first_exam_day, last_exam_day, countdown, show_days 
-    
+    # Countdown and whether to show days
+    today = datetime.date.today()
+    days_to_start = (first_exam_day - today).days
+    if days_to_start > 0:
+        countdown = f"Exam starts in {days_to_start} days"
+        show_days = days_to_start <= 7    # Show full exam days only if <7 days
+    else:
+        countdown = ""  # Neutral if exam started or passed
+        show_days = False
+
+    # Return all required info
+    return first_exam_day, last_exam_day, countdown, show_days, exam_days
+
 # Generate schedules
-f_start, f_end, f_count, f_days = get_exam_details(3, 1)   # 1st sem: March, 1st week
-s_start, s_end, s_count, s_days = get_exam_details(8, 3)   # 2nd sem: August, 3rd week
+f_start, f_end, f_count, f_show_days, f_days = get_exam_details(3, 1)   # 1st sem: March, 1st week
+s_start, s_end, s_count, s_show_days, s_days = get_exam_details(8, 3)   # 2nd sem: August, 3rd week
 
 # Build responses
 responses = {
@@ -68,16 +69,15 @@ responses = {
     "support_contact": " Student Support:\n- Email: support@university.edu\n- Office hours: 8:00 AM – 4:00 PM"
 }
 
-def format_exam_response(start, end, countdown, days):
-    """Formats the exam response nicely"""
-    response = f" Exam Schedule:\n🗓 {start.strftime('%d %B %Y')} – {end.strftime('%d %B %Y')}\n {countdown}\n Daily start time: 9:00 AM"
-    if days:
+def format_exam_response(start, end, countdown, show_days, days):
+    response = f"Exam Schedule:\n🗓 {start.strftime('%d %B %Y')} – {end.strftime('%d %B %Y')}\n{countdown}\nDaily start time: 9:00 AM"
+    if show_days:
         day_list = "\n".join([day.strftime("%A, %d %B %Y") for day in days])
-        response += f"\n\n Exam Days (Weekdays only):\n{day_list}"
+        response += f"\n\nExam Days (Weekdays only):\n{day_list}"
     return response
 
-responses["1st Semester exam"] = format_exam_response(f_start, f_end, f_count, f_days)
-responses["2nd Semester exam"] = format_exam_response(s_start, s_end, s_count, s_days)
+responses["1st Semester exam"] = format_exam_response(f_start, f_end, f_count, f_show_days, f_days)
+responses["2nd Semester exam"] = format_exam_response(s_start, s_end, s_count, s_show_days, s_days)
 
 # Streamlit interface
 st.title("📚 Nigerian Navy Institute of Technology: Student Support Chatbot")
